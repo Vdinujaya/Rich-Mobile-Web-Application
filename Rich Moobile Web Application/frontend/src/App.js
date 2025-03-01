@@ -1,45 +1,89 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import './styles/main.css';
 
 class App extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      items:[]
-    }
+      items: [],
+      loading: true,
+      error: null
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.retrieveItems();
   }
 
-  retrieveItems(){
-    axios.get("http://localhost:4000/items").then(res=>{
-      this.setState({
-        items:res.data
+  retrieveItems() {
+    axios.get("http://localhost:4000/items")
+      .then(res => {
+        this.setState({
+          items: res.data,
+          loading: false
+        });
       })
-      console.log(this.state.items)
-    }).catch(err=>{
-      console.error("Error fetching posts:", err)
-    })
+      .catch(err => {
+        console.error("Error fetching items:", err);
+        this.setState({
+          error: err.message,
+          loading: false
+        });
+      });
+  }
+
+  renderContent() {
+    const { items, loading, error } = this.state;
+
+    if (loading) {
+      return <div className="loading">Loading products...</div>;
+    }
+
+    if (error) {
+      return <div className="error">Error: {error}</div>;
+    }
+
+    if (items.length === 0) {
+      return <div className="no-products">No products found</div>;
+    }
+
+    return (
+      <div className="products-grid">
+        {items.map((item, index) => (
+          <div className="product-card" key={index}>
+            <img 
+              src={`http://localhost:4000/${item.image}`}
+              alt={item.name}
+              className="product-image"
+              onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = '/placeholder-image.jpg';
+              }}
+            />
+            <h3>{item.name}</h3>
+            <p>Brand: {item.brand}</p>
+            <p>Price: ${item.price}</p>
+            <button className="add-to-cart">Add to Cart</button>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   render() {
     return (
-      <div>
-        {this.state.items.map(items=>(
-          <div>
-          <p>{items.name}</p>
-          <p>{items.category}</p>
-          <p>{items.brand}</p>
-          <p>{items.description}</p>
-          <p>{items.price}</p>
-          <p>{items.stock}</p>
-          <p>{items.specifications}</p>
-          <img src={`http://localhost:4000/${items.image}`} alt={items.name} width="200" />
+      <div className="app-container">
+        <Navbar />
+        
+        <main className="container">
+          <h1 className="page-title">Latest Mobiles</h1>
+          {this.renderContent()}
+        </main>
 
-        </div>
-        ))}
+        <Footer />
       </div>
     );
   }

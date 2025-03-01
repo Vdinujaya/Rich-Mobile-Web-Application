@@ -1,0 +1,76 @@
+body {
+  overflow-x: hidden;
+}
+
+.navbar {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.banner-container {
+  width: 100%;
+  height: 255px;
+  background: #000000; /* Optional: Add background color */
+  text-align: center; /* Center the banner */
+  padding: 5px 0; /* Add some vertical spacing */
+
+  overflow: hidden;
+}
+
+.shop-banner {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  max-width: 1200px; /* Set maximum width if needed */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the banner */
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+  
+  .banner-container {
+    margin-bottom: 10px;
+    height: 80px;
+  }
+  
+  .shop-banner {
+    object-position: center; /* Ensure important parts of banner are visible */
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+}
