@@ -23,9 +23,9 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Contact Us</h4>
           <div className="contact-info">
-            <p><FaMapMarkerAlt /> 123 Tech Street, Silicon Valley</p>
-            <p><FaPhone /> (555) 123-4567</p>
-            <p><FaEnvelope /> support@mobileshop.com</p>
+            <p><FaMapMarkerAlt /> NO.01, Highlevel Road, Meepe, Padukka </p>
+            <p><FaPhone /> (+94) 071-2139219</p>
+            <p><FaEnvelope /> support@RichMobile.com</p>
           </div>
         </div>
 

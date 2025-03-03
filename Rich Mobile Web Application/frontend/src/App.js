@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AdminDashboard from './pages/admin/Dashboard';
+import ProductsManagement from './pages/admin/ProductsManagement';
+import OrdersManagement from './pages/admin/OrdersManagement';
+import UsersManagement from './pages/admin/UsersManagement';
+import Settings from './pages/admin/Settings';
+import InventoryManagement from './pages/admin/InventoryManagement';
 import './styles/main.css';
 
 class App extends Component {
@@ -35,7 +42,7 @@ class App extends Component {
       });
   }
 
-  renderContent() {
+  renderMainContent() {
     const { items, loading, error } = this.state;
 
     if (loading) {
@@ -75,16 +82,38 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app-container">
-        <Navbar />
-        
-        <main className="container">
-          <h1 className="page-title">Latest Mobiles</h1>
-          {this.renderContent()}
-        </main>
+      
+        <div className="app-container">
+          <Navbar />
+          
+          <Routes>
+            {/* Main Public Route */}
+            <Route path="/" element={
+              <>
+                <main className="container">
+                  <h1 className="page-title">Latest Mobiles</h1>
+                  {this.renderMainContent()}
+                </main>
+                <Footer />
+              </>
+            } />
 
-        <Footer />
-      </div>
+            {/* Admin Routes */}
+          <Route path="/admin" element={
+              <>
+              <AdminDashboard />
+              </>
+              }>
+              <Route index element={<ProductsManagement />} />
+              <Route path="products" element={<ProductsManagement />} />
+              <Route path="orders" element={<OrdersManagement />} />
+              <Route path="users" element={<UsersManagement />} />
+              <Route path="inventory" element={<InventoryManagement />} />
+              <Route path="settings" element={<Settings />} />
+              </Route>
+          </Routes>
+        </div>
+      
     );
   }
 }
