@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import NavBar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import '../../styles/ItemDetails.css'; // Import the new CSS file
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../styles/ItemDetails.css'; // Import the new CSS file
 
 class ItemDetails extends Component {
   constructor(props) {

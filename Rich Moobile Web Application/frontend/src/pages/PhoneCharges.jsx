@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import '../../styles/App.css';
+import NavBar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../styles/App.css';
 
 class Home extends Component {
   constructor(props) {
@@ -20,8 +20,10 @@ class Home extends Component {
   retrieveItems() {
     axios.get("http://localhost:4000/items")
       .then(res => {
+        // Filter items where category is 'Others'
+        const filteredItems = res.data.filter(item => item.category === 'Phone Chargers');
         this.setState({
-          items: res.data
+          items: filteredItems
         });
       })
       .catch(err => {
