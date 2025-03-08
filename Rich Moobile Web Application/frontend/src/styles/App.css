@@ -1,0 +1,81 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* NavBar and Footer Styles */
+  /* You can add specific styles for NavBar and Footer here if needed */
+  
+  /* Items Container */
+  .items-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  /* Item Card */
+  .item-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 40px);
+    max-width: 300px;
+    padding: 15px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .item-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .item-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .item-details {
+    margin-top: 10px;
+  }
+  
+  .item-details h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .item-details p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .item-details strong {
+    color: #333;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .item-card {
+      width: calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .item-card {
+      width: 100%;
+    }
+  }

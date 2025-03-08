@@ -1,0 +1,80 @@
+/* General Navbar Styles */
+.navbar {
+  background: linear-gradient(90deg, #1e3c72, #2a5298); /* Gradient background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Banner Container */
+.banner-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.shop-banner {
+  width: 50%;
+  height: 50%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.shop-banner:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+}
+
+/* Navigation Links Container */
+.nav-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur effect for modern look */
+  margin-top: 10px;
+  padding: 10px 0;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between links */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Navigation Links */
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2); /* Light background on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.nav-link:active {
+  transform: translateY(0); /* Reset lift when clicked */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}
