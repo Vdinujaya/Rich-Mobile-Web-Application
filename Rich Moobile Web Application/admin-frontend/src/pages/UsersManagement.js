@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiUser, FiMail, FiEdit2 } from 'react-icons/fi';
+import AdminNavbar from '../components/AdminNavbar';
 
 const UsersManagement = () => {
   const users = [
@@ -9,6 +10,7 @@ const UsersManagement = () => {
 
   return (
     <div className="admin-content">
+      <AdminNavbar />
       <div className="admin-header">
         <h2>User Management</h2>
       </div>

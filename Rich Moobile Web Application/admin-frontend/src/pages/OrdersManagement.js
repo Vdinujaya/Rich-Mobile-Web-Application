@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiClock, FiCheckCircle, FiXCircle, FiInfo } from 'react-icons/fi';
+import AdminNavbar from '../components/AdminNavbar';
 
 const OrdersManagement = () => {
   // Mock reservation data
@@ -61,6 +62,7 @@ const OrdersManagement = () => {
 
   return (
     <div className="admin-content">
+      <AdminNavbar />
       <div className="admin-header">
         <h2>Reservation Management</h2>
         <div className="filter-container">
