@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiMail, FiSave, FiLock, FiShoppingBag } from 'react-icons/fi';
+import AdminNavbar from '../components/AdminNavbar';
 
 const Settings = () => {
   const [storeName, setStoreName] = useState('Mobile Shop');
@@ -8,6 +9,7 @@ const Settings = () => {
 
   return (
     <div className="admin-content">
+      <AdminNavbar />
       <div className="admin-header">
         <h2>Store Settings</h2>
       </div>
