@@ -47,6 +47,15 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Feedback Section (Added between Contact Us and Follow Us) */}
+        <div className="footer-section">
+          <h4>Give Feedback</h4>
+          <p>We value your feedback! Help us improve.</p>
+          <a href="/feedback" className="feedback-link">
+            <FaCommentDots /> Share Your Thoughts
+          </a>
+        </div>
+
         <div className="footer-section">
           <h4>Follow Us</h4>
           <div className="social-icons">
