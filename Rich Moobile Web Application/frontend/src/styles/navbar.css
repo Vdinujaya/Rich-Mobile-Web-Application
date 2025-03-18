@@ -11,7 +11,6 @@
 /* Banner Container */
 .banner-container {
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -40,7 +39,6 @@
   display: flex;
   justify-content: center;
   gap: 20px; /* Space between links */
-  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -147,4 +145,34 @@
   .nav-container {
     display: none; /* Hide regular nav links on smaller screens */
   }
+}
+/* Profile Link and Icon */
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ecf0f1; /* Adjust color to match your navbar */
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.profile-link:hover {
+  color: #f1c40f; /* Adjust hover color to match your theme */
+}
+
+.profile-icon {
+  font-size: 20px;
+}
+/* Highlight active link */
+.nav-link.active {
+  color: #3498db; /* Change to your preferred highlight color */
+  font-weight: bold; /* Optional: Make the text bold */
+  border-bottom: 2px solid #3498db; /* Optional: Add an underline */
+}
+
+/* Highlight active link in the sidebar */
+.sidebar-links .nav-link.active {
+  color: #3498db; /* Change to your preferred highlight color */
+  font-weight: bold; /* Optional: Make the text bold */
 }

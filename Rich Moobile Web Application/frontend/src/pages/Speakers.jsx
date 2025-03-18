@@ -42,7 +42,7 @@ class Home extends Component {
               <img src={`http://localhost:4000/${item.image}`} alt={item.name} className="item-image" />
               <div className="item-details" style={{textAlign:'center'}}>
                 <h3>{item.name}</h3>
-                <p><strong>${item.price}</strong></p>
+                <p><strong>RS: {item.price}.00</strong></p>
               </div>
             </div>
           ))}

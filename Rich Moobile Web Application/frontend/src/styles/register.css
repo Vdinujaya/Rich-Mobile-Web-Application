@@ -1,0 +1,175 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Shared Container Styles */
+.login-container, .register-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: 40px auto; /* Center the form and add vertical spacing */
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+}
+
+.password-group {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 35px;
+    cursor: pointer;
+    color: #777;
+    transition: color 0.3s ease;
+}
+
+.eye-icon:hover {
+    color: #333;
+}
+
+/* Button Styles */
+.submit-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Message Styles */
+.message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #ff4d4d;
+}
+
+/* Link Styles */
+a {
+    text-decoration: none;
+}
+
+a button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+a button:hover {
+    background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login-container, .register-container {
+        padding: 20px;
+        margin: 20px; /* Adjust margin for smaller screens */
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .form-group input {
+        font-size: 12px;
+    }
+
+    .submit-button {
+        font-size: 14px;
+    }
+}
+/* Login Prompt Styles */
+.login-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Space between text and link */
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.login-prompt p {
+    margin: 0;
+    color: #555;
+}
+
+.login-prompt a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.login-prompt a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}

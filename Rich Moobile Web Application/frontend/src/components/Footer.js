@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/footer.css';
 import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope, FaCommentDots } from 'react-icons/fa';
 
 const Footer = () => {
-  const handleFeedbackClick = () => {
-    // Open a feedback form or modal
-    alert('Thank you for your feedback! Please share your thoughts.');
-  };
+  useEffect(() => {
+    // Inject Botpress Webchat script
+    const script1 = document.createElement("script");
+    script1.src = "https://cdn.botpress.cloud/webchat/v2.2/inject.js";
+    script1.async = true;
+    document.body.appendChild(script1);
+
+    const script2 = document.createElement("script");
+    script2.src = "https://files.bpcontent.cloud/2025/03/04/05/20250304053109-BGL37ER9.js";
+    script2.async = true;
+    document.body.appendChild(script2);
+
+    return () => {
+      document.body.removeChild(script1);
+      document.body.removeChild(script2);
+    };
+  }, []);
 
   return (
     <footer className="footer">
@@ -44,18 +57,14 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Feedback Button */}
-      <div className="feedback-button" onClick={handleFeedbackClick}>
-        <FaCommentDots /> Give Feedback
-      </div>
-
-      {/* Chatbot Script */}
-      <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-      <script src="https://files.bpcontent.cloud/2025/03/04/05/20250304053109-BGL37ER9.js"></script>
-
       <div className="footer-bottom">
         <p>&copy; 2024 MobileShop. All rights reserved | Designed by 5th Dimension</p>
       </div>
+
+      {/* Floating Feedback Button (Adjusted to avoid overlapping with chatbot) */}
+      <a href="/feedback" className="floating-feedback-button" style={{ bottom: '100px', marginRight:'9px' }}>
+        <FaCommentDots className="feedback-icon" />
+      </a>
     </footer>
   );
 };

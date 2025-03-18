@@ -42,7 +42,7 @@ class ItemDetails extends Component {
             <img src={`http://localhost:4000/${item.image}`} alt={item.name} className="item-details-image" />
             <div className="item-details-info">
               <h1 className="item-name">{item.name}</h1>
-              <p className="item-price"><strong>Price:</strong> ${item.price}</p>
+              <p className="item-price"><strong>Price:</strong> RS: {item.price}.00</p>
               <p className="item-category"><strong>Category:</strong> {item.category}</p>
               <p className="item-brand"><strong>Brand:</strong> {item.brand}</p>
               <p className="item-description"><strong>Description:</strong> {item.description}</p>

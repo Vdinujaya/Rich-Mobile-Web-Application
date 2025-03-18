@@ -39,6 +39,16 @@ router.post('/add', upload.single('image'), async (req, res) => {
     }
 });
 
+router.get('/items/search', async (req, res) => {
+    try {
+        const query = req.query.query;
+        const items = await Item.find({ name: { $regex: query, $options: 'i' } });
+        return res.status(200).json(items);
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+});
+
 // GET - Fetch All Items
 router.get('/items', async (req, res) => {
     try {

@@ -15,7 +15,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const itemRoute = require('./routes/item');
+const customerRoute = require('./routes/customer');
+const feedbackRoute = require('./routes/feedback');
+
 app.use(itemRoute);
+app.use(customerRoute);
+app.use(feedbackRoute);
 
 const PORT = 4000;
 const DB_URL = "mongodb+srv://5thDimension:5thDimension@richmobile.o6bgx.mongodb.net/RichMobileDB?retryWrites=true&w=majority&appName=RichMobile";

@@ -28,7 +28,7 @@
   
   .item-details-image {
     width: 50%;
-    object-fit: cover;
+    object-fit: contain;
   }
   
   .item-details-info {
