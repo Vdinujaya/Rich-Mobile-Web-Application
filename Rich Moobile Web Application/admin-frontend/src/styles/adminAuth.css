@@ -1,0 +1,150 @@
+/* Admin Authentication Styles */
+.admin-auth-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-auth-container h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: #34495e;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 0.8rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.password-group {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.btn-save {
+    background: #3498db;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-save:hover {
+    background: #2980b9;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #34495e;
+}
+
+.auth-switch a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: #fadbd8;
+    border-radius: 5px;
+}
+
+.input-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+/* logout*/
+.btn-logout {
+    background: #fd1a1a;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-logout:hover {
+    background: #000000;
+  }
+  
+  .form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: space-between;
+  }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-auth-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .admin-auth-container h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-group input {
+        padding: 0.7rem;
+    }
+    
+    .submit-button {
+        padding: 0.7rem;
+    }
+}

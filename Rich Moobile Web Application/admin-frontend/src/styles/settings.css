@@ -1,0 +1,27 @@
+/* Settings form buttons */
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .btn-logout {
+    background: #e74c3c;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-logout:hover {
+    background: #c0392b;
+  }
+  
+  .btn-logout svg {
+    font-size: 1.1rem;
+  }
