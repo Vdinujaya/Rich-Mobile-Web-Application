@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { FiMail, FiSave, FiLock, FiShoppingBag } from 'react-icons/fi';
+import { FiMail, FiSave, FiLock, FiShoppingBag, FiLogOut } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../components/AdminNavbar';
+import '../styles/settings.css';
 
-const Settings = () => {
+const Settings = ({ setIsAuthenticated }) => {  // Receive setIsAuthenticated prop
   const [storeName, setStoreName] = useState('Mobile Shop');
   const [storeEmail, setStoreEmail] = useState('support@mobileshop.com');
   const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear authentication
+    localStorage.removeItem('adminToken');
+    setIsAuthenticated(false);  // Update parent state
+    navigate('/admin/login');
+  };
 
   return (
     <div className="admin-content">
@@ -49,7 +59,16 @@ const Settings = () => {
           <FiSave /> Save Changes
         </button>
       </div>
-    </div>
+
+        <div className="form-buttons">
+          <button className="btn-save">
+            <FiSave /> Save Changes
+          </button>
+          <button className="btn-logout" onClick={handleLogout}>
+            <FiLogOut /> Logout
+          </button>
+        </div>
+      </div>
   );
 };
 
