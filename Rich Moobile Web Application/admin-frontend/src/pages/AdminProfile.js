@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AdminNavbar from '../components/AdminNavbar';
 import '../styles/adminAuth.css';
 
 const AdminProfile = ({ setIsAuthenticated }) => {
@@ -86,6 +87,8 @@ const handleLogout = () => {
 };
 
   return (
+    <div className="admin-content">
+      <AdminNavbar/>
     <div className="admin-auth-container">
       <h2>Manage Account</h2>
       <form className="auth-form" onSubmit={handleUpdate}>
@@ -170,6 +173,7 @@ const handleLogout = () => {
         </div>
       </form>
       {message && <p className="error-message">{message}</p>}
+    </div>
     </div>
   );
 };

@@ -48,7 +48,7 @@ const App = () => {
     <Routes>
       {/* Default route redirects to register */}
       <Route path="/" element={
-        isAuthenticated ? <Dashboard /> : <Navigate to="/admin/register" />
+        isAuthenticated ? <Dashboard /> : <Navigate to="/admin/login" />
       }/>
 
       {/* Registration route */}
