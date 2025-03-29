@@ -70,10 +70,6 @@ const AdminLogin = ({ setIsAuthenticated }) => {
           Login
         </button>
       </form>
-
-      <div className="auth-switch">
-        <p>Don't have an account? <a href="/admin/register">Register here</a></p>
-      </div>
       
       {message && <p className="error-message">{message}</p>}
     </div>

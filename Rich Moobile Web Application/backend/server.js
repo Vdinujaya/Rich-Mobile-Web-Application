@@ -57,11 +57,13 @@ const adminRoutes = require('./routes/admin');
 const itemRoutes = require('./routes/item');
 const customerRoutes = require('./routes/customer');
 const feedbackRoutes = require('./routes/feedback');
+const orderRoutes = require('./routes/order');
 
 // Main routes
 app.use(itemRoutes);          // Preserve existing item routes
 app.use(customerRoutes);      // Preserve existing customer routes
 app.use(feedbackRoutes);      // Preserve existing feedback routes
+app.use('/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Protected Admin Routes (combining old and new)

@@ -12,6 +12,7 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Feedback from './pages/Feedback'
 import SearchResult from './pages/SearchResult'
+import PlaceOrder from './pages/PlaceOrder'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/feedback" element={<Feedback />} />
       <Route path="/searchresult" element={<SearchResult />} />
       <Route path="/item/:id" element={<ItemDetails />} />
+      <Route path="/place-order/:id" element={<PlaceOrder />} />
     </Routes>
         
   );

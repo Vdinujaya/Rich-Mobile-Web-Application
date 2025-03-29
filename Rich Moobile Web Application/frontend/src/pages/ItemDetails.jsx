@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
-import '../styles/ItemDetails.css'; // Import the new CSS file
+import '../styles/ItemDetails.css';
 
 class ItemDetails extends Component {
   constructor(props) {
@@ -30,6 +30,11 @@ class ItemDetails extends Component {
       });
   }
 
+  handleOrderClick = () => {
+    const { item } = this.state;
+    this.props.navigate(`/place-order/${item._id}`);
+  }
+
   render() {
     const { item } = this.state;
     if (!item) return <div className="loading">Loading...</div>;
@@ -48,6 +53,12 @@ class ItemDetails extends Component {
               <p className="item-description"><strong>Description:</strong> {item.description}</p>
               <p className="item-stock"><strong>Stock:</strong> {item.stock}</p>
               <p className="item-specifications"><strong>Specifications:</strong> {item.specifications}</p>
+              <button 
+                className="order-button" 
+                onClick={this.handleOrderClick}
+              >
+                Order Now
+              </button>
             </div>
           </div>
         </div>
@@ -57,8 +68,9 @@ class ItemDetails extends Component {
   }
 }
 
-// Wrapper to use useParams in a class component
+// Wrapper to use useParams and useNavigate in a class component
 export default function ItemDetailsWrapper() {
   const params = useParams();
-  return <ItemDetails params={params} />;
+  const navigate = useNavigate();
+  return <ItemDetails params={params} navigate={navigate} />;
 }

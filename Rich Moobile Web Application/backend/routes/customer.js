@@ -62,6 +62,16 @@ router.get('/customers', async (req, res) => {
     }
 });
 
+// GET - Count total number of customers
+router.get('/customers/count', async (req, res) => {
+    try {
+        const count = await Customer.countDocuments();
+        return res.status(200).json({ totalCustomers: count });
+    } catch (err) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 // GET - Fetch a single customer by ID
 router.get('/customers/:id', async (req, res) => {
     try {
@@ -104,5 +114,6 @@ router.delete('/cusdelete/:id', async (req, res) => {
         return res.status(400).json({ error: err.message });
     }
 });
+
 
 module.exports = router;

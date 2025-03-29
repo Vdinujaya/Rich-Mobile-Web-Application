@@ -119,4 +119,37 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
+// GET - Get Stock Summary (total items, total stock, percentage, restockable amount)
+router.get('/items/stock/summary', async (req, res) => {
+    try {
+        const MAX_STOCK = 500; // Maximum allowed stock
+        
+        // Calculate both total items count and total stock
+        const result = await Item.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalItems: { $sum: 1 }, // This counts each document as 1
+                    totalStock: { $sum: "$stock" }
+                }
+            }
+        ]);
+
+        const summary = result.length > 0 ? result[0] : { totalItems: 0, totalStock: 0 };
+        const percentage = Math.round((summary.totalStock / MAX_STOCK) * 100);
+        const canRestock = MAX_STOCK - summary.totalStock;
+
+        return res.status(200).json({
+            totalItems: summary.totalItems,
+            currentStock: summary.totalStock,
+            maximumStock: MAX_STOCK,
+            stockPercentage: `${percentage}%`,
+            canRestock,
+            status: percentage >= 80 ? 'High' : percentage >= 50 ? 'Medium' : 'Low'
+        });
+    } catch (err) {
+        return res.status(400).json({ error: err.message });
+    }
+});
+
 module.exports = router;

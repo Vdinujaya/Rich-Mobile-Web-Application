@@ -1,150 +1,227 @@
 import React, { useState, useEffect } from 'react';
-import { FiClock, FiCheckCircle, FiXCircle, FiInfo } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiPackage, FiX } from 'react-icons/fi';
 import AdminNavbar from '../components/AdminNavbar';
+import '../styles/ordersManagement.css'
 
 const OrdersManagement = () => {
-  // Mock reservation data
-  const initialReservations = [
-    {
-      id: 'RES#2024-001',
-      customer: 'John Doe',
-      items: ['iPhone 15 Pro (128GB)', 'Samsung Charger'],
-      reservationTime: '2024-03-20T14:30:00',
-      pickupDeadline: '2024-03-21T14:30:00',
-      status: 'pending',
-      verificationCode: 'A5F3B2'
-    },
-    {
-      id: 'RES#2024-002',
-      customer: 'Jane Smith',
-      items: ['Google Pixel 8'],
-      reservationTime: '2024-03-20T10:00:00',
-      pickupDeadline: '2024-03-21T10:00:00',
-      status: 'picked-up',
-      verificationCode: 'C9D1E4'
-    }
-  ];
-
-  const [reservations, setReservations] = useState(initialReservations);
+  const [orders, setOrders] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Update current time every minute
+  // Fetch orders from API
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
-    return () => clearInterval(timer);
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/orders', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          }
+        });
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(`Invalid response: ${text.substring(0, 100)}...`);
+        }
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch orders');
+        }
+
+        setOrders(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
   }, []);
 
-  // Calculate time remaining
-  const getTimeRemaining = (deadline) => {
-    const deadlineTime = new Date(deadline).getTime();
-    const timeDiff = deadlineTime - currentTime.getTime();
-    
-    if (timeDiff < 0) return 'Expired';
-    
-    const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((timeDiff / 1000 / 60) % 60);
-    return `${hours}h ${minutes}m remaining`;
+  // Update order status
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const response = await fetch(`http://localhost:4000/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Invalid response: ${text.substring(0, 100)}...`);
+      }
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to update order status');
+      }
+
+      setOrders(orders.map(order => 
+        order._id === orderId ? { ...order, status: newStatus } : order
+      ));
+    } catch (err) {
+      setError(err.message);
+      console.error('Update error:', err);
+    }
   };
 
-  // Filter reservations
-  const filteredReservations = reservations.filter(reservation => {
+  const filteredOrders = orders.filter(order => {
     if (filterStatus === 'all') return true;
-    return reservation.status === filterStatus;
+    return order.status === filterStatus;
   });
 
-  // Update reservation status
-  const updateStatus = (id, newStatus) => {
-    setReservations(reservations.map(res => 
-      res.id === id ? { ...res, status: newStatus } : res
-    ));
+  const formatDate = (dateString) => {
+    const options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit', 
+      minute: '2-digit' 
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  const getStatusInfo = (status) => {
+    const statusMap = {
+      'pending': { text: 'Pending', class: 'pending', icon: <FiClock /> },
+      'processing': { text: 'Processing', class: 'processing', icon: <FiPackage /> },
+      'delivered': { text: 'Delivered', class: 'delivered', icon: <FiCheckCircle /> },
+      'cancelled': { text: 'Cancelled', class: 'cancelled', icon: <FiX /> }
+    };
+    return statusMap[status] || { text: status, class: status, icon: null };
+  };
+
+  if (loading) {
+    return (
+      <div className="admin-content">
+        <AdminNavbar />
+        <div className="loading-spinner">Loading orders...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="admin-content">
+        <AdminNavbar />
+        <div className="error-message">
+          Error loading orders: {error}
+          <button onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-content">
       <AdminNavbar/>
       <div className="admin-header">
-        <h2>Reservation Management</h2>
+        <h2>Order Management</h2>
         <div className="filter-container">
           <select 
             value={filterStatus} 
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <option value="all">All Reservations</option>
-            <option value="pending">Pending Pickup</option>
-            <option value="picked-up">Picked Up</option>
-            <option value="expired">Expired</option>
+            <option value="all">All Orders</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
           </select>
         </div>
       </div>
 
-      <div className="reservations-list">
-        <div className="reservation-header">
-          <div>Reservation ID</div>
+      <div className="orders-list">
+        <div className="order-header">
+          <div>Order ID</div>
           <div>Customer</div>
           <div>Items</div>
-          <div>Pickup Deadline</div>
+          <div>Order Date</div>
+          <div>Total</div>
           <div>Status</div>
           <div>Actions</div>
         </div>
 
-        {filteredReservations.map(reservation => {
-          const isExpired = new Date(reservation.pickupDeadline) < currentTime;
-          const status = isExpired ? 'expired' : reservation.status;
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map(order => {
+            const statusInfo = getStatusInfo(order.status);
 
-          return (
-            <div className={`reservation-card ${status}`} key={reservation.id}>
-              <div className="reservation-id">
-                #{reservation.id}
-                <div className="verification-code">
-                  <FiInfo /> Code: {reservation.verificationCode}
+            return (
+              <div className={`order-card ${statusInfo.class}`} key={order._id}>
+                <div className="order-id">
+                  #{order._id.substring(18, 24).toUpperCase()}
                 </div>
-              </div>
-              
-              <div className="customer-info">{reservation.customer}</div>
-              
-              <div className="items-list">
-                {reservation.items.map((item, index) => (
-                  <div key={index} className="item">{item}</div>
-                ))}
-              </div>
-
-              <div className="time-info">
-                <div className="reservation-time">
-                  <FiClock /> {new Date(reservation.reservationTime).toLocaleString()}
+                
+                <div className="customer-info">
+                  <div>{order.customerName}</div>
+                  <div className="customer-email">{order.customerEmail}</div>
                 </div>
-                <div className="time-remaining">
-                  {getTimeRemaining(reservation.pickupDeadline)}
+                
+                <div className="items-list">
+                  <div className="item">
+                    {order.itemName} × {order.quantity}
+                  </div>
+                  {order.items && order.items.length > 1 && (
+                    <div className="additional-items">+{order.items.length - 1} more</div>
+                  )}
                 </div>
-              </div>
 
-              <div className="status-indicator">
-                <span className={`status-badge ${status}`}>
-                  {status.replace('-', ' ').toUpperCase()}
-                </span>
-              </div>
+                <div className="order-date">
+                  <FiClock /> {formatDate(order.orderDate)}
+                </div>
 
-              <div className="reservation-actions">
-                {status === 'pending' && !isExpired && (
-                  <>
+                <div className="order-total">
+                  LKR {order.totalPrice.toFixed(2)}
+                </div>
+
+                <div className="status-indicator">
+                  <span className={`status-badge ${statusInfo.class}`}>
+                    {statusInfo.icon} {statusInfo.text}
+                  </span>
+                </div>
+
+                <div className="order-actions">
+                  {order.status === 'pending' && (
+                    <>
+                      <button 
+                        className="btn-process"
+                        onClick={() => updateOrderStatus(order._id, 'processing')}
+                      >
+                        <FiPackage /> Process
+                      </button>
+                      <button
+                        className="btn-cancel"
+                        onClick={() => updateOrderStatus(order._id, 'cancelled')}
+                      >
+                        <FiX /> Cancel
+                      </button>
+                    </>
+                  )}
+                  {order.status === 'processing' && (
                     <button 
-                      className="btn-confirm"
-                      onClick={() => updateStatus(reservation.id, 'picked-up')}
+                      className="btn-deliver"
+                      onClick={() => updateOrderStatus(order._id, 'delivered')}
                     >
-                      <FiCheckCircle /> Mark as Picked Up
+                      <FiCheckCircle /> Deliver
                     </button>
-                    <button
-                      className="btn-cancel"
-                      onClick={() => updateStatus(reservation.id, 'expired')}
-                    >
-                      <FiXCircle /> Cancel Reservation
-                    </button>
-                  </>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div className="no-orders">No orders found</div>
+        )}
       </div>
     </div>
   );

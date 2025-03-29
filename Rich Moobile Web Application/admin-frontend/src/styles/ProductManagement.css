@@ -87,3 +87,38 @@
   .btn-delete:hover {
     color: #c82333;
   }
+  /* Search Bar Styles */
+.search-bar-container {
+  margin: 20px 0;
+  width: 100%;
+}
+
+.search-bar {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+/* Message when no results found */
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}

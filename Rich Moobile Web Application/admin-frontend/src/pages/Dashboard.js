@@ -1,9 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FiPackage, FiShoppingCart, FiUsers, FiBox, FiDollarSign, FiUser } from 'react-icons/fi';
 import '../styles/Dashboard.css';
+import { getInventorySummary } from '../components/inventoryServices';
+import { getCustomerCount } from '../components/customerServices';
+import { getOrderStatistics } from '../components/orderServices'; // You'll need to create this
 
 const AdminNavbar = ({ adminData }) => {
+  const [inventoryData, setInventoryData] = useState(null);
+  const [customerCount, setCustomerCount] = useState(null);
+  const [orderStats, setOrderStats] = useState(null);
+  const [loading, setLoading] = useState({
+    inventory: true,
+    customers: true,
+    orders: true
+  });
+  const [error, setError] = useState({
+    inventory: null,
+    customers: null,
+    orders: null
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch inventory data
+        const inventory = await getInventorySummary();
+        setInventoryData(inventory);
+        setLoading(prev => ({ ...prev, inventory: false }));
+      } catch (err) {
+        setError(prev => ({ ...prev, inventory: err.message }));
+        setLoading(prev => ({ ...prev, inventory: false }));
+      }
+
+      try {
+        // Fetch customer count
+        const count = await getCustomerCount();
+        setCustomerCount(count);
+        setLoading(prev => ({ ...prev, customers: false }));
+      } catch (err) {
+        setError(prev => ({ ...prev, customers: err.message }));
+        setLoading(prev => ({ ...prev, customers: false }));
+      }
+
+      try {
+        // Fetch order statistics
+        const stats = await getOrderStatistics();
+        setOrderStats(stats);
+        setLoading(prev => ({ ...prev, orders: false }));
+      } catch (err) {
+        setError(prev => ({ ...prev, orders: err.message }));
+        setLoading(prev => ({ ...prev, orders: false }));
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   return (
     <nav className="admin-navbar">
       <div className="admin-nav-container">
@@ -15,12 +69,24 @@ const AdminNavbar = ({ adminData }) => {
                 <FiPackage size={24} />
               </div>
               <h3>Products Management</h3>
-              <div className="card-stats">
-                <span className="stat-number">1,234</span>
-                <span className="stat-label">Total Products</span>
-              </div>
+              {loading.inventory ? (
+                <div className="card-stats">
+                  <span className="stat-number">Loading...</span>
+                </div>
+              ) : error.inventory ? (
+                <div className="card-stats">
+                  <span className="stat-number error">Error</span>
+                  <span className="stat-label">{error.inventory}</span>
+                </div>
+              ) : (
+                <div className="card-stats">
+                  <span className="stat-number">
+                    {inventoryData?.totalItems || 'N/A'}
+                  </span>
+                  <span className="stat-label">Total Products</span>
+                </div>
+              )}
               <div className="card-footer">
-                <span>12 Low Stock Items</span>
                 <button className="view-button">Manage</button>
               </div>
             </div>
@@ -33,14 +99,27 @@ const AdminNavbar = ({ adminData }) => {
                 <FiShoppingCart size={24} />
               </div>
               <h3>Orders</h3>
-              <div className="card-stats">
-                <span className="stat-number">56</span>
-                <span className="stat-label">Pending Orders</span>
-              </div>
-              <div className="card-footer">
-                <span>LKR 12,450 Total Sales</span>
-                <button className="view-button">View Orders</button>
-              </div>
+              {loading.orders ? (
+                <div className="card-stats">
+                  <span className="stat-number">Loading...</span>
+                </div>
+              ) : error.orders ? (
+                <div className="card-stats">
+                  <span className="stat-number error">Error</span>
+                  <span className="stat-label">{error.orders}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="card-stats">
+                    <span className="stat-number">{orderStats?.pendingOrders || 0}</span>
+                    <span className="stat-label">Pending Orders</span>
+                  </div>
+                  <div className="card-footer">
+                    <span>{orderStats?.deliveredOrders || 0} Completed Orders</span>
+                    <button className="view-button">View Orders</button>
+                  </div>
+                </>
+              )}
             </div>
           </NavLink>
 
@@ -51,14 +130,32 @@ const AdminNavbar = ({ adminData }) => {
                 <FiBox size={24} />
               </div>
               <h3>Inventory</h3>
-              <div className="card-stats">
-                <span className="stat-number">84%</span>
-                <span className="stat-label">Stock Available</span>
-              </div>
-              <div className="card-footer">
-                <span>15 Items to Restock</span>
-                <button className="view-button">Check Inventory</button>
-              </div>
+              {loading.inventory ? (
+                <div className="card-stats">
+                  <span className="stat-number">Loading...</span>
+                </div>
+              ) : error.inventory ? (
+                <div className="card-stats">
+                  <span className="stat-number error">Error</span>
+                  <span className="stat-label">{error.inventory}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="card-stats">
+                    <span className="stat-number">{inventoryData.stockPercentage}</span>
+                    <span className="stat-label">Current Stock: {inventoryData.currentStock}</span>
+                  </div>
+                  <div className="progress-bar">
+                    <div 
+                      className={`progress-fill ${inventoryData.status.toLowerCase()}`} 
+                      style={{ width: inventoryData.stockPercentage }}
+                    ></div>
+                  </div>
+                  <div className="card-footer">
+                    <button className="view-button">Check Inventory</button>
+                  </div>
+                </>
+              )}
             </div>
           </NavLink>
 
@@ -69,35 +166,74 @@ const AdminNavbar = ({ adminData }) => {
                 <FiUsers size={24} />
               </div>
               <h3>Users</h3>
-              <div className="card-stats">
-                <span className="stat-number">2,345</span>
-                <span className="stat-label">Registered Users</span>
-              </div>
-              <div className="card-footer">
-                <span>15 New Today</span>
-                <button className="view-button">Manage Users</button>
-              </div>
+              {loading.customers ? (
+                <div className="card-stats">
+                  <span className="stat-number">Loading...</span>
+                </div>
+              ) : error.customers ? (
+                <div className="card-stats">
+                  <span className="stat-number error">Error</span>
+                  <span className="stat-label">{error.customers}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="card-stats">
+                    <span className="stat-number">{customerCount}</span>
+                    <span className="stat-label">Registered Customers</span>
+                  </div>
+                  <div className="card-footer">
+                    <button className="view-button">Manage Users</button>
+                  </div>
+                </>
+              )}
             </div>
           </NavLink>
 
           {/* Sales Overview Card */}
-          <div className="dashboard-card sales-card">
-            <div className="card-content">
-              <div className="card-icon">
-                <FiDollarSign size={24} />
-              </div>
-              <h3>Sales Overview</h3>
-              <div className="card-stats">
-                <span className="stat-number">LKR 45,670</span>
-                <span className="stat-label">Monthly Revenue</span>
-              </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '75%' }}></div>
-              </div>
-            </div>
-          </div>
+          {/* Sales Overview Card */}
+<div className="dashboard-card sales-card">
+  <div className="card-content">
+    <div className="card-icon">
+      <FiDollarSign size={24} />
+    </div>
+    <h3>Sales Overview</h3>
+    {loading.orders ? (
+      <div className="card-stats">
+        <span className="stat-number">Loading...</span>
+      </div>
+    ) : error.orders ? (
+      <div className="card-stats">
+        <span className="stat-number error">Error</span>
+        <span className="stat-label">{error.orders}</span>
+      </div>
+    ) : (
+      <>
+        <div className="card-stats">
+          <span className="stat-number">LKR {orderStats?.deliveredRevenue?.toLocaleString() || 0}</span>
+          <span className="stat-label">Total Revenue</span>
+        </div>
+        <div className="progress-bar">
+          <div 
+            className="progress-fill" 
+            style={{ 
+              width: `${Math.min(100, ((orderStats?.deliveredOrders || 0) / 
+              (((orderStats?.deliveredOrders || 0) + (orderStats?.pendingOrders || 0)) || 1)) * 100)}%` 
+            }}
+          ></div>
+        </div>
+        <div className="card-stats">
+          <span className="stat-label">
+            {orderStats?.deliveredOrders || 0} / {(orderStats?.deliveredOrders || 0) + (orderStats?.pendingOrders || 0)}
+          </span>
+          <br/>
+          <span className="stat-label">Completed / Total Orders</span>
+        </div>
+      </>
+    )}
+  </div>
+</div>
 
-          {/* Account Management Card (Replaced Last Block) */}
+          {/* Account Management Card */}
           <NavLink to="/admin/profile" className="dashboard-card account-card">
             <div className="card-content">
               <div className="card-icon">
